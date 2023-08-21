@@ -21,5 +21,7 @@ int main(int argc, char **argv) {
 
     population.print();
 
+    population.free();
+
     return 0;
 }

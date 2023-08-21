@@ -24,6 +24,7 @@ public:
     void crossover();
     void mutation();
     void print();
+    void free();
 };
 
 #endif

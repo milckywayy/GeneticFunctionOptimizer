@@ -44,3 +44,9 @@ void Population::print() {
         cout << "(" << i->getX() << ", " << i->getY() << ") fitness: " << i->getFitness() << endl;
     }
 }
+
+void Population::free() {
+    for (Individual *i : individuals) {
+        delete i;
+    }
+}
