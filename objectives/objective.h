@@ -4,7 +4,7 @@
 
 class Objective {
 public:
-    virtual double value(double x, double y);
+    virtual double value(double x, double y) = 0;
 };
 
 #endif

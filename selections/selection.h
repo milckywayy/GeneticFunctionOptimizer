@@ -6,8 +6,8 @@
 
 
 class Selection {
-public:
-    virtual void select(Population *population);
+public:    
+    virtual void select(Population *population) = 0;
 };
 
 #endif

@@ -1,13 +1,13 @@
 #include <iostream>
 #include <time.h>
 #include "population.h"
+#include "selections/tournamentSelection.h"
 #include "utils/randomNumberGenerator.h"
 
 
-Population::Population(int size, Constraints *constraints, Objective *fitness) {
+Population::Population(int size, Constraints *constraints) {
     this->size = size;
     this->constraints = constraints;
-    this->fitness = fitness;
 
     randomNumberGenerator rand((unsigned)time(NULL));
 
@@ -21,22 +21,10 @@ Population::Population(int size, Constraints *constraints, Objective *fitness) {
     }
 }
 
-void Population::evaluation() {
+void Population::evaluation(Objective *fitnessFunc) {
     for (Individual *i : individuals) {
-        i->setFitness(fitness->value(i->getX(), i->getY()));
+        i->setFitness(fitnessFunc->value(i->getX(), i->getY()));
     }
-}
-
-void Population::selection() {
-
-}
-
-void Population::crossover() {
-
-}
-
-void Population::mutation() {
-
 }
 
 void Population::print() {

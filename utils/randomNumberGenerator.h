@@ -1,3 +1,6 @@
+#ifndef RANDOM_NUMBER_GENERATOR_H_
+#define RANDOM_NUMBER_GENERATOR_H_
+
 
 class randomNumberGenerator {
 private:
@@ -8,3 +11,5 @@ public:
     int getRandomInteger(int min, int max);
     int getSeed();
 };
+
+#endif

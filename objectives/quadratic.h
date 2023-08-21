@@ -7,7 +7,7 @@
 
 class Quadratic : public Objective {
 public:
-    double value(double x, double y);
+    double value(double x, double y) override;
 };
 
 #endif

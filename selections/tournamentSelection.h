@@ -3,10 +3,15 @@
 
 
 #include "selection.h"
+#include "../utils/randomNumberGenerator.h"
+
 
 class TournamentSelection : public Selection {
+private:
+    randomNumberGenerator *rand;
 public:
-    void select(Population *population);
+    TournamentSelection(randomNumberGenerator *rand);
+    void select(Population *population) override;
 };
 
 #endif

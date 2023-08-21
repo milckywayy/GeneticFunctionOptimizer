@@ -15,14 +15,11 @@ private:
     int size;
     vector<Individual*> individuals;  
     Constraints *constraints;
-    Objective *fitness;
+    Objective *fitnessFunc;
 
 public:
-    Population(int size, Constraints *constraints, Objective *fitness);
-    void evaluation();
-    void selection();
-    void crossover();
-    void mutation();
+    Population(int size, Constraints *constraints);
+    void evaluation(Objective *fitnessFunc);
     void print();
     void free();
 };
