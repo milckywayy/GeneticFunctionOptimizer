@@ -2,14 +2,20 @@
 #define RANDOM_NUMBER_GENERATOR_H_
 
 
-class randomNumberGenerator {
+#include <random>
+
+
+using namespace std;
+
+
+class RandomNumberGenerator {
 private:
-    unsigned int seed;
+    mt19937 gen;
 public:
-    randomNumberGenerator(unsigned int seed);
+    RandomNumberGenerator(unsigned int seed);
     double getRandomDouble(double min, double max);
     int getRandomInteger(int min, int max);
-    int getSeed();
+    double getGaussDistributionNumber(double mean, double deviation);
 };
 
 #endif

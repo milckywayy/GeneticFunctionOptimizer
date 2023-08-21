@@ -19,7 +19,8 @@ private:
  
 public:
     Population();
-    Population(int size, Constraints *constraints, randomNumberGenerator *rand);
+    Population(vector<Individual*> individuals);
+    Population(int size, Constraints *constraints, RandomNumberGenerator *rand);
     void addIndividual(Individual *individual);
     Individual *getIndividual(int index);
     Individual *getBestIndividual();
@@ -27,6 +28,7 @@ public:
     int getSize();
     void evaluation(Objective *fitnessFunc);
     void print();
+    Population *copy();
     void clear();
     ~Population();
 };

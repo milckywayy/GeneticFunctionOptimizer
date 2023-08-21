@@ -6,7 +6,7 @@
 #define TOURNAMENT_SIZE 2
 
 
-TournamentSelection::TournamentSelection(randomNumberGenerator *rand) {
+TournamentSelection::TournamentSelection(RandomNumberGenerator *rand) {
     this->rand = rand; 
 }
 

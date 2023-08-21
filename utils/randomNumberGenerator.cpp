@@ -1,23 +1,22 @@
-#include <random>
-#include <time.h>
 #include "randomNumberGenerator.h"
 
 
-randomNumberGenerator::randomNumberGenerator(unsigned int seed) {
-    this->seed = seed;
+using namespace std;
 
-    srand(seed);
+
+RandomNumberGenerator::RandomNumberGenerator(unsigned int seed) : gen(seed) {}
+
+double RandomNumberGenerator::getRandomDouble(double min, double max) {
+    std::uniform_real_distribution<double> distribution(min, max);
+    return distribution(gen);
 }
 
-double randomNumberGenerator::getRandomDouble(double min, double max) {
-    double f = (double)rand() / RAND_MAX;
-    return min + (f * (max - min));
+int RandomNumberGenerator::getRandomInteger(int min, int max) {
+    uniform_int_distribution<int> distribution(min, max);
+    return distribution(gen);
 }
 
-int randomNumberGenerator::getRandomInteger(int min, int max) {
-    return min + (rand() % (max - min + 1));
-}
-
-int randomNumberGenerator::getSeed() {
-    return seed;
+double RandomNumberGenerator::getGaussDistributionNumber(double mean, double deviation) {
+    normal_distribution<double> distribution(mean, deviation);
+    return distribution(gen);
 }

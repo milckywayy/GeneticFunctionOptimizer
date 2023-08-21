@@ -7,8 +7,11 @@
 Population::Population() {
 }
 
+Population::Population(vector<Individual*> individuals) {
+    this->individuals = individuals;
+}
 
-Population::Population(int size, Constraints *constraints, randomNumberGenerator *rand) {
+Population::Population(int size, Constraints *constraints, RandomNumberGenerator *rand) {
     this->constraints = constraints;
 
     double x;
@@ -59,6 +62,16 @@ void Population::print() {
     for (Individual *i : individuals) {
         cout << "(" << i->getX() << ", " << i->getY() << ") fitness: " << i->getFitness() << endl;
     }
+}
+
+Population *Population::copy() {
+    vector<Individual*> copied;
+
+    for (Individual *i : individuals) {
+        copied.push_back(i->copy());
+    }
+
+    return new Population(copied);
 }
 
 void Population::clear() {

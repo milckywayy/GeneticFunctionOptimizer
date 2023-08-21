@@ -8,9 +8,9 @@
 
 class TournamentSelection : public Selection {
 private:
-    randomNumberGenerator *rand;
+    RandomNumberGenerator *rand;
 public:
-    TournamentSelection(randomNumberGenerator *rand);
+    TournamentSelection(RandomNumberGenerator *rand);
     void select(Population *population, Population *parents) override;
 };
 

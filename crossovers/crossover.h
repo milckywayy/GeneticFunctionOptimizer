@@ -7,7 +7,7 @@
 
 class Crossover {
 public:    
-    virtual void cross(Population *parents, Population *children) = 0;
+    virtual void cross(Population *parents, Population *children, RandomNumberGenerator *rand) = 0;
 };
 
 #endif
