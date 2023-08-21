@@ -1,26 +1,21 @@
-#include <random>
-#include <time.h>
 #include <iostream>
+#include <time.h>
 #include "population.h"
+#include "utils/randomNumberGenerator.h"
 
-
-double generateRandomDouble(double minRange, double maxRange) {
-    double f = (double)rand() / RAND_MAX;
-    return minRange + (f * (maxRange - minRange));
-}
 
 Population::Population(int size, Constraints *constraints, Objective *fitness) {
     this->size = size;
     this->constraints = constraints;
     this->fitness = fitness;
 
-    srand(time(NULL));
+    randomNumberGenerator rand((unsigned)time(NULL));
 
     double x;
     double y;
     for (int i = 0; i < size; i++) {
-        x = generateRandomDouble(constraints->getMinX(), constraints->getMaxX());
-        y = generateRandomDouble(constraints->getMinY(), constraints->getMaxY());
+        x = rand.getRandomDouble((double)constraints->getMinX(), (double)constraints->getMaxX());
+        y = rand.getRandomDouble(constraints->getMinY(), constraints->getMaxY());
 
         individuals.push_back(new Individual(x, y));
     }
