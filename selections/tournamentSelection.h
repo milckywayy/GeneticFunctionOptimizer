@@ -11,7 +11,7 @@ private:
     randomNumberGenerator *rand;
 public:
     TournamentSelection(randomNumberGenerator *rand);
-    void select(Population *population) override;
+    void select(Population *population, Population *parents) override;
 };
 
 #endif

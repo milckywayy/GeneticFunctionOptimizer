@@ -2,23 +2,51 @@
 #include <time.h>
 #include "population.h"
 #include "selections/tournamentSelection.h"
-#include "utils/randomNumberGenerator.h"
 
 
-Population::Population(int size, Constraints *constraints) {
-    this->size = size;
+Population::Population() {
+}
+
+
+Population::Population(int size, Constraints *constraints, randomNumberGenerator *rand) {
     this->constraints = constraints;
-
-    randomNumberGenerator rand((unsigned)time(NULL));
 
     double x;
     double y;
     for (int i = 0; i < size; i++) {
-        x = rand.getRandomDouble((double)constraints->getMinX(), (double)constraints->getMaxX());
-        y = rand.getRandomDouble(constraints->getMinY(), constraints->getMaxY());
+        x = rand->getRandomDouble((double)constraints->getMinX(), (double)constraints->getMaxX());
+        y = rand->getRandomDouble(constraints->getMinY(), constraints->getMaxY());
 
         individuals.push_back(new Individual(x, y));
     }
+}
+
+void Population::addIndividual(Individual *individual) {
+    individuals.push_back(individual);
+}
+
+Individual *Population::getIndividual(int index) {
+    return individuals[index];
+}
+
+Individual *Population::getBestIndividual() {
+    Individual *bestOne = individuals[0];
+
+    for (int i = 1; i < individuals.size(); i++) {
+        if (individuals[i]->getFitness() > bestOne->getFitness()) {
+            bestOne = individuals[i];
+        }
+    }
+
+    return bestOne;
+}
+
+void Population::removeIndividual(int index) {
+    individuals.erase(individuals.begin() + index);
+}
+
+int Population::getSize() {
+    return individuals.size();
 }
 
 void Population::evaluation(Objective *fitnessFunc) {
@@ -33,8 +61,13 @@ void Population::print() {
     }
 }
 
-void Population::free() {
+void Population::clear() {
     for (Individual *i : individuals) {
         delete i;
     }
+    individuals.clear();
+}
+
+Population::~Population() {
+    clear();
 }

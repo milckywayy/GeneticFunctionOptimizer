@@ -7,7 +7,7 @@
 
 class Selection {
 public:    
-    virtual void select(Population *population) = 0;
+    virtual void select(Population *population, Population *parents) = 0;
 };
 
 #endif

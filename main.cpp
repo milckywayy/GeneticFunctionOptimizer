@@ -5,29 +5,24 @@
 #include "objectives/quadratic.h"
 #include "selections/tournamentSelection.h"
 #include "utils/randomNumberGenerator.h"
+#include "evolution.h"
 
 using namespace std;
 
 
 int main(int argc, char **argv) {
     randomNumberGenerator rand((unsigned)time(NULL));
-    TournamentSelection selection(&rand);
+
     Constraints constraints(-1, 1, -1, 1);
     Quadratic fitnessFunc;
-    
+    TournamentSelection selection(&rand);    
 
-    Population population(10, &constraints);
+    Population *population = new Population(10, &constraints, &rand);
 
-    for (int i = 0; i < 5; i++) {
-        population.evaluation(&fitnessFunc);
-        selection.select(&population);
-        // crossover();
-        // mutation();
-    }
+    Evolution evolution(population, &fitnessFunc, &selection);
+    evolution.run();
 
-    population.print();
-
-    population.free();
+    delete population;
 
     return 0;
 }
