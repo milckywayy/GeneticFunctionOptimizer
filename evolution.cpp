@@ -5,27 +5,29 @@
 #include "utils/randomNumberGenerator.h"
 
 
-Evolution::Evolution(Population *population, Objective *fitnessFunc, Selection *selection) {
+Evolution::Evolution(Population *population, Objective *fitnessFunc, Selection *selection, Crossover *crossover) {
     this->fitnessFunc = fitnessFunc;
     this->selection = selection;
     this->population = population;
+    this->crossover = crossover;
 }
 
 void Evolution::run() {
     randomNumberGenerator rand((unsigned)time(NULL));
 
     Population *parents = new Population();
-    for (int i = 0; i < 5; i++) {
+    Population *children = new Population();
+    for (int i = 0; i < 1; i++) {
         population->evaluation(fitnessFunc);
         selection->select(population, parents);
-        // population->clear();
         // crossover();
         // mutation();
-        parents->clear();
     }
-    delete parents;
 
     population->print();
+    cout << endl;
+    parents->print();
 
-    cout << "best one: " << population->getBestIndividual()->getFitness() << endl;
+    delete parents;
+    delete children;
 }

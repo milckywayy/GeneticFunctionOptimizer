@@ -31,6 +31,12 @@ void Individual::setY(double y) {
     this->y = y;
 }
 
+Individual *Individual::copy() {
+    Individual *newIndividual = new Individual(x, y);
+    newIndividual->setFitness(fitness);
+    return newIndividual;
+}
+
 bool Individual::operator<(const Individual& other) {
     return this->fitness > other.fitness;
 }

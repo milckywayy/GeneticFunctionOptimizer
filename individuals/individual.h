@@ -14,6 +14,7 @@ public:
     void setFitness(double fitness);
     void setX(double x);
     void setY(double y);
+    Individual *copy();
     bool operator<(const Individual& other);
     bool operator==(const Individual& other);
 };

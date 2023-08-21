@@ -65,6 +65,7 @@ void Population::clear() {
     for (Individual *i : individuals) {
         delete i;
     }
+    
     individuals.clear();
 }
 
