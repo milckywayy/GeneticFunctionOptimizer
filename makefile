@@ -1,0 +1,2 @@
+main.exe: ./main.cpp ./population.cpp ./individuals/individual.cpp ./objectives/quadratic.cpp ./constraints/constraints.cpp
+	g++ -o ./main.exe ./main.cpp ./population.cpp ./individuals/individual.cpp ./objectives/quadratic.cpp ./constraints/constraints.cpp
