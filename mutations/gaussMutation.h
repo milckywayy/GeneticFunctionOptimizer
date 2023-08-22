@@ -1,5 +1,5 @@
-#ifndef SINGLE_POINT_MUTATION_H_
-#define SINGLE_POINT_MUTATION_H_
+#ifndef GAUSS_MUTATION_H_
+#define GAUSS_MUTATION_H_
 
 #include "mutation.h"
 

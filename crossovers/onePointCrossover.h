@@ -1,5 +1,5 @@
-#ifndef ARITHMETIC_CROSSOVER_H_
-#define ARITHMETIC_CROSSOVER_H_
+#ifndef ONE_POINT_CROSSOVER_H_
+#define ONE_POINT_CROSSOVER_H_
 
 
 #include "crossover.h"
