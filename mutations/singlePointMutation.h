@@ -7,7 +7,7 @@
 class SinglePointMutation : public Mutation {
 public:
     SinglePointMutation(double mutationRate);
-    void mutate(Population *children, RandomNumberGenerator *rand);
+    void mutate(Population *children, Constraints *constraints, RandomNumberGenerator *rand);
 };
 
 #endif

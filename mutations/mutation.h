@@ -2,6 +2,7 @@
 #define MUTATION_H_
 
 #include "../utils/randomNumberGenerator.h"
+#include "../constraints/constraints.h"
 #include "../population.h"
 
 #include <iostream>
@@ -13,7 +14,7 @@ public:
     Mutation (double mutationRate){
         this->mutationRate = mutationRate;
     }
-    virtual void mutate(Population *children, RandomNumberGenerator *rand) = 0;
+    virtual void mutate(Population *children, Constraints *constraints, RandomNumberGenerator *rand) = 0;
 };
 
 #endif

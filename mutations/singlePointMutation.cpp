@@ -5,17 +5,23 @@
 SinglePointMutation::SinglePointMutation(double mutationRate) : Mutation(mutationRate) {
 }
 
-void SinglePointMutation::mutate(Population *children, RandomNumberGenerator *rand) {
+void SinglePointMutation::mutate(Population *children, Constraints *constraints, RandomNumberGenerator *rand) {
+    double newX;
+    double newY;
     double weight;
 
     for (int i = 0; i < children->getSize(); i++) {
         if (rand->getRandomDouble(0, 1) <= mutationRate) {
-            weight = rand->getGaussDistributionNumber(0.0, 1.0);
+            do {
+                weight = rand->getGaussDistributionNumber(0.0, 1.0);
 
-            cout << children->getIndividual(i)->getX() << ", " << weight << endl;
+                newX = children->getIndividual(i)->getX() * weight;
+                newY = children->getIndividual(i)->getY() * weight;
+            }
+            while (!constraints->isInside(newX, newY));
 
-            children->getIndividual(i)->setX(children->getIndividual(i)->getX() * weight);
-            children->getIndividual(i)->setY(children->getIndividual(i)->getY() * weight);
+            children->getIndividual(i)->setX(newX);
+            children->getIndividual(i)->setY(newY);
 
             cout << children->getIndividual(i)->getX() << endl;
             cout << endl;

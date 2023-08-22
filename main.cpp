@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
 
     Population *population = new Population(10, &constraints, &rand);
 
-    Evolution evolution(population, &fitnessFunc, &selection, &crossover, &mutation);
+    Evolution evolution(population, &fitnessFunc, &constraints, &selection, &crossover, &mutation);
     evolution.run();
 
     delete population;

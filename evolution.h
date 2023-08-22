@@ -12,12 +12,13 @@
 class Evolution {
 private:
     Objective *fitnessFunc;
+    Constraints *constraints;
     Selection *selection;
     Population *population;
     Crossover *crossover;
     Mutation *mutation;
 public:
-    Evolution(Population *population, Objective *fitnessFunc, Selection *selection, Crossover *crossover, Mutation *mutation);
+    Evolution(Population *population, Objective *fitnessFunc, Constraints *constraints, Selection *selection, Crossover *crossover, Mutation *mutation);
     void run();
 };
 

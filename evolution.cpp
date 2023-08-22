@@ -2,11 +2,13 @@
 #include <time.h>
 #include "evolution.h"
 #include "population.h"
+#include "constraints/constraints.h"
 #include "utils/randomNumberGenerator.h"
 
 
-Evolution::Evolution(Population *population, Objective *fitnessFunc, Selection *selection, Crossover *crossover, Mutation *mutation) {
+Evolution::Evolution(Population *population, Objective *fitnessFunc, Constraints *constraints, Selection *selection, Crossover *crossover, Mutation *mutation) {
     this->fitnessFunc = fitnessFunc;
+    this->constraints = constraints;
     this->selection = selection;
     this->population = population;
     this->crossover = crossover;
@@ -22,7 +24,7 @@ void Evolution::run() {
         population->evaluation(fitnessFunc);
         selection->select(population, parents);
         crossover->cross(parents, children, &rand);
-        mutation->mutate(children, &rand);
+        mutation->mutate(children, constraints, &rand);
         population = children->copy();
 
         parents->clear();
