@@ -19,7 +19,6 @@ private:
  
 public:
     Population();
-    Population(vector<Individual*> individuals);
     Population(int size, Constraints *constraints, RandomNumberGenerator *rand);
     void addIndividual(Individual *individual);
     Individual *getIndividual(int index);

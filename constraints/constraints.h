@@ -2,19 +2,24 @@
 #define CONSTRAINTS_H_
 
 
+#include <vector>
+
+
+using namespace std;
+
+
 class Constraints {
 private:
-    int xMin;
-    int xMax;
-    int yMin;
-    int yMax;
+    int dimension; 
+    vector<double> *min;
+    vector<double> *max;
 public:
-    Constraints(int xMin, int xMax, int yMin, int yMax);
-    bool isInside(double x, double y);
-    int getMinX();
-    int getMaxX();
-    int getMinY();
-    int getMaxY();
+    Constraints(int dimension, vector<double> *min, vector<double> *max);
+    bool isInside(vector<double> *point);
+    bool isInsideOnAxis(double position, int axis);
+    int getDimension();
+    double getMin(int axis);
+    double getMax(int axis);
 };
 
 #endif

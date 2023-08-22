@@ -2,9 +2,24 @@
 #define OBJECTIVE_H_
 
 
+#include <vector>
+
+
+using namespace std;
+
+
 class Objective {
+    int dimension;
 public:
-    virtual double value(double x, double y) = 0;
+    Objective (int dimension) {
+        this->dimension = dimension;
+    }
+
+    int getDimension(){
+        return dimension;
+    }
+
+    virtual double value(vector<double> *position) = 0;
 };
 
 #endif

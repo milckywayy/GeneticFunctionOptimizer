@@ -1,29 +1,38 @@
 #include "constraints.h"
 
 
-Constraints::Constraints(int xMin, int xMax, int yMin, int yMax) {
-    this->xMin = xMin;
-    this->xMax = xMax;
-    this->yMin = yMin;
-    this->yMax = yMax;
+Constraints::Constraints(int dimension, vector<double> *min, vector<double> *max) {
+    this->dimension = dimension;
+    this->min = min;
+    this->max = max;
 }
 
-bool Constraints::isInside(double x, double y) {
-    return xMin <= x <= xMax && yMin <= y <= yMax;
+bool Constraints::isInside(vector<double> *point) {
+    for (int axis = 0; axis < dimension; axis++) {
+        if (min->at(axis) > point->at(axis) || point->at(axis) > max->at(axis)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
-int Constraints::getMinX() {
-    return xMin;
+bool Constraints::isInsideOnAxis(double position, int axis) {
+    if (min->at(axis) <= position && position <= max->at(axis)) {
+        return true;
+    }
+
+    return false;
 }
 
-int Constraints::getMaxX() {
-    return xMax;
+int Constraints::getDimension() {
+    return dimension;
 }
 
-int Constraints::getMinY() {
-    return yMin;
+double Constraints::getMin(int axis) {
+    return min->at(axis);
 }
 
-int Constraints::getMaxY() {
-    return yMax;
+double Constraints::getMax(int axis) {
+    return max->at(axis);
 }

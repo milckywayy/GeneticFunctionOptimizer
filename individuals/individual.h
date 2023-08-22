@@ -2,22 +2,28 @@
 #define INDIVIDUAL_H_
 
 
+#include <vector>
+
+
+using namespace std;
+
+
 class Individual {
 private:
-    double x, y;
+    int dimension;
+    vector<double> *position;
     double fitness;
 public:
-    Individual(double x, double y);
+    Individual(vector<double> *position);
+    int getDimension();
+    vector<double> *getPosition();
+    double getPositionAtAxis(int axis);
     double getFitness();
-    double getX();
-    double getY();
     void setFitness(double fitness);
-    void setX(double x);
-    void setY(double y);
+    void setPositionAtAxis(int axis, double value);
     void print();
     Individual *copy();
-    bool operator<(const Individual& other);
-    bool operator==(const Individual& other);
+    ~Individual();
 };
 
 #endif

@@ -7,20 +7,17 @@
 Population::Population() {
 }
 
-Population::Population(vector<Individual*> individuals) {
-    this->individuals = individuals;
-}
-
 Population::Population(int size, Constraints *constraints, RandomNumberGenerator *rand) {
     this->constraints = constraints;
 
-    double x;
-    double y;
     for (int i = 0; i < size; i++) {
-        x = rand->getRandomDouble((double)constraints->getMinX(), (double)constraints->getMaxX());
-        y = rand->getRandomDouble(constraints->getMinY(), constraints->getMaxY());
+        vector<double> *position = new vector<double>;
+        
+        for (int axis = 0; axis < constraints->getDimension(); axis++) {
+            position->push_back(rand->getRandomDouble(constraints->getMin(axis), constraints->getMax(axis)));
+        }
 
-        individuals.push_back(new Individual(x, y));
+        individuals.push_back(new Individual(position));
     }
 }
 
@@ -64,7 +61,7 @@ double Population::getAvegareFitness() {
 
 void Population::evaluate(Objective *fitnessFunc) {
     for (Individual *i : individuals) {
-        i->setFitness(fitnessFunc->value(i->getX(), i->getY()));
+        i->setFitness(fitnessFunc->value(i->getPosition()));
     }
 }
 

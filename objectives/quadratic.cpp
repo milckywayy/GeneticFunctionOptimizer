@@ -2,6 +2,10 @@
 #include <cmath>
 
 
-double Quadratic::value(double x, double y) {
-    return -(pow(x + 1, 2) + pow(y - 1, 2) - 10);
+Quadratic::Quadratic() : Objective(1) {
+}
+
+
+double Quadratic::value(vector<double> *position) {
+    return -pow(position->at(0), 2);
 }

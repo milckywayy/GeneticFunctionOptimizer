@@ -1,13 +1,13 @@
-#ifndef QUADRATIC_H_
-#define QUADRATIC_H_
+#ifndef CUBIC_H_
+#define CUBIC_H_
 
 
 #include "objective.h"
 
 
-class Quadratic : public Objective {
+class Cubic : public Objective {
 public:
-    Quadratic();
+    Cubic();
     double value(vector<double> *position) override;
 };
 

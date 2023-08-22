@@ -3,7 +3,21 @@
 #include <iostream>
 
 
+#include <vector>
+
+
 void OnePointCrossover::cross(Individual **parents, vector<Individual*> *children, RandomNumberGenerator *rand) {
-    children->push_back(new Individual(parents[0]->getX(), parents[1]->getY()));
-    children->push_back(new Individual(parents[1]->getX(), parents[0]->getY()));
+    int crossoverPoint = rand->getRandomInteger(1, parents[0]->getDimension());
+
+    vector<double> *newChildPosition = new vector<double>;
+
+    for (int axis = 0; axis < crossoverPoint; axis++) {
+        newChildPosition->push_back(parents[0]->getPositionAtAxis(axis));
+    }
+
+    for (int axis = crossoverPoint; axis < parents[0]->getDimension(); axis++) {
+        newChildPosition->push_back(parents[1]->getPositionAtAxis(axis));
+    }
+
+    children->push_back(new Individual(newChildPosition));
 }

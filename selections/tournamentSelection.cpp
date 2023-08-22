@@ -34,7 +34,7 @@ void TournamentSelection::select(Population *population, Individual **parents, R
             }
         }
 
-        // Tournament winner will be considered as a perent
+        // Tournament winner will be considered as a parent
         parents[parent_id] = population->getIndividual(ids[max]);
     }
 }

@@ -7,7 +7,8 @@
 
 class Rosenbrock : public Objective {
 public:
-    double value(double x, double y) override;
+    Rosenbrock();
+    double value(vector<double> *position) override;
 };
 
 #endif
