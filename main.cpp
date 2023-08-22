@@ -15,9 +15,9 @@
 using namespace std;
 
 
-#define GENERATIONS 100
+#define GENERATIONS 500
 #define POPULATION_SIZE 50
-#define MUTATION_RATE 0.005
+#define MUTATION_RATE 0.01
 
 
 int main(int argc, char **argv) {
@@ -44,10 +44,13 @@ int main(int argc, char **argv) {
 
     Individual *solution;
     solution = evolution.run();
+    
+    cout << "Solution: ( ";
     for (int axis = 0; axis < solution->getDimension(); axis++) {
         cout << round(solution->getPositionAtAxis(axis) * 1000) / 1000 << " ";
     }
-    cout << endl;
+    cout << ")" << endl;
+
     delete solution;
 
     return 0;

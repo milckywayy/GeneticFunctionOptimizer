@@ -7,7 +7,14 @@
 
 
 void OnePointCrossover::cross(Individual **parents, vector<Individual*> *children, RandomNumberGenerator *rand) {
-    int crossoverPoint = rand->getRandomInteger(1, parents[0]->getDimension());
+    int crossoverPoint;
+
+    if (parents[0]->getDimension() > 1) {
+        crossoverPoint = rand->getRandomInteger(1, parents[0]->getDimension() - 1);
+    }
+    else {
+        crossoverPoint = 1;
+    }
 
     vector<double> *newChildPosition = new vector<double>;
 
