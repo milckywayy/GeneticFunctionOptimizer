@@ -22,9 +22,6 @@ void SinglePointMutation::mutate(Population *children, Constraints *constraints,
 
             children->getIndividual(i)->setX(newX);
             children->getIndividual(i)->setY(newY);
-
-            cout << children->getIndividual(i)->getX() << endl;
-            cout << endl;
         }
     }
 }

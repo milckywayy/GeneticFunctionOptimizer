@@ -28,7 +28,7 @@ public:
     int getSize();
     void evaluation(Objective *fitnessFunc);
     void print();
-    Population *copy();
+    void copy(Population *population);
     void clear();
     ~Population();
 };

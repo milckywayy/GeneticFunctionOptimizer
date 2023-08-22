@@ -64,14 +64,10 @@ void Population::print() {
     }
 }
 
-Population *Population::copy() {
-    vector<Individual*> copied;
-
+void Population::copy(Population *population) {
     for (Individual *i : individuals) {
-        copied.push_back(i->copy());
+        population->addIndividual(i->copy());
     }
-
-    return new Population(copied);
 }
 
 void Population::clear() {

@@ -20,15 +20,18 @@ void Evolution::run() {
 
     Population *parents = new Population();
     Population *children = new Population();
-    for (int i = 0; i < 5; i++) {
+    
+    for (int i = 0; i < 10; i++) {
         population->evaluation(fitnessFunc);
         selection->select(population, parents);
         crossover->cross(parents, children, &rand);
         mutation->mutate(children, constraints, &rand);
-        population = children->copy();
+        
+	population->clear();
+	children->copy(population);
 
-        parents->clear();
         children->clear();
+	parents->clear();
     }
 
     cout << round(population->getBestIndividual()->getX() * 100) / 100 << ", " << round(population->getBestIndividual()->getY() * 100) / 100 << endl;
