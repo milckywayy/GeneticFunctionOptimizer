@@ -23,7 +23,6 @@ public:
     void addIndividual(Individual *individual);
     Individual *getIndividual(int index);
     Individual *getBestIndividual();
-    void removeIndividual(int index);
     int getSize();
     double getAvegareFitness();
     void evaluate(Objective *fitnessFunc);

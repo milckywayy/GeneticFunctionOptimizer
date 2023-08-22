@@ -41,10 +41,6 @@ Individual *Population::getBestIndividual() {
     return bestOne;
 }
 
-void Population::removeIndividual(int index) {
-    individuals.erase(individuals.begin() + index);
-}
-
 int Population::getSize() {
     return individuals.size();
 }

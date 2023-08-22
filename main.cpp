@@ -15,8 +15,8 @@
 using namespace std;
 
 
-#define GENERATIONS 300
-#define POPULATION_SIZE 100
+#define GENERATIONS 100
+#define POPULATION_SIZE 50
 #define MUTATION_RATE 0.005
 
 
@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     RandomNumberGenerator rand((unsigned)time(NULL));
 
     // Function to be optimized
-    Quadratic fitnessFunc;
+    Rosenbrock fitnessFunc;
 
     vector<double> constraintsMin;
     vector<double> constraintsMax;

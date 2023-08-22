@@ -4,13 +4,7 @@
 
 Individual::Individual(vector<double> *position) {
     dimension = position->size();
-
-    this->position = new vector<double>;
-
-    for (int axis = 0; axis < dimension; axis++) {
-        this->position->push_back(position->at(axis));
-    }
-
+    this->position = position;
     this->fitness = 0.0;
 }
 
@@ -47,7 +41,13 @@ void Individual::print() {
 }
 
 Individual *Individual::copy() {
-    Individual *newIndividual = new Individual(position);
+    vector<double> *newPosition = new vector<double>;
+    
+    for (double d : *position) {
+        newPosition->push_back(d);   
+    }
+
+    Individual *newIndividual = new Individual(newPosition);
     newIndividual->setFitness(fitness);
     return newIndividual;
 }
