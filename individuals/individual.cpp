@@ -1,4 +1,5 @@
 #include "individual.h"
+#include <iostream>
 
 
 Individual::Individual(double x, double y) {
@@ -29,6 +30,10 @@ void Individual::setX(double x) {
 
 void Individual::setY(double y) {
     this->y = y;
+}
+
+void Individual::print() {
+    std::cout << "(" << x << ", " << y << ") fitness = " << fitness << std::endl;
 }
 
 Individual *Individual::copy() {

@@ -12,15 +12,16 @@
 class Evolution {
 private:
     int generations;
+    int populationSize;
     Objective *fitnessFunc;
     Constraints *constraints;
     Selection *selection;
-    Population *population;
     Crossover *crossover;
     Mutation *mutation;
+    RandomNumberGenerator *rand;
 public:
-    Evolution(int generations, Population *population, Objective *fitnessFunc, Constraints *constraints, Selection *selection, Crossover *crossover, Mutation *mutation);
-    void run();
+    Evolution(int generations, int populationSize, Objective *fitnessFunc, Constraints *constraints, Selection *selection, Crossover *crossover, Mutation *mutation, RandomNumberGenerator *rand);
+    Individual * run();
 };
 
 #endif

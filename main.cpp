@@ -6,34 +6,36 @@
 #include "objectives/rosenbrock.h"
 #include "selections/tournamentSelection.h"
 #include "crossovers/onePointCrossover.h"
-#include "mutations/singlePointMutation.h"
+#include "mutations/gaussMutation.h"
 #include "utils/randomNumberGenerator.h"
 #include "evolution.h"
+
 
 using namespace std;
 
 
-#define GENERATIONS 100
-#define POPULATION 1000
-#define MUTATION_RATE 0.05
+#define GENERATIONS 500
+#define POPULATION_SIZE 50
+#define MUTATION_RATE 0.01
 
 
 int main(int argc, char **argv) {
     RandomNumberGenerator rand((unsigned)time(NULL));
 
-    Constraints constraints(-3, 3, -3, 3);
-    // Quadratic fitnessFunc;
+    // Function to be optimized
     Rosenbrock fitnessFunc;
-    TournamentSelection selection(&rand);    
+
+    Constraints constraints(-3, 3, -3, 3);
+    TournamentSelection selection;    
     OnePointCrossover crossover;
-    SinglePointMutation mutation(MUTATION_RATE);
+    GaussMutation mutation(MUTATION_RATE);
 
-    Population *population = new Population(POPULATION, &constraints, &rand);
+    Evolution evolution(GENERATIONS, POPULATION_SIZE, &fitnessFunc, &constraints, &selection, &crossover, &mutation, &rand);
 
-    Evolution evolution(GENERATIONS, population, &fitnessFunc, &constraints, &selection, &crossover, &mutation);
-    evolution.run();
-
-    delete population;
+    Individual *solution;
+    solution = evolution.run();
+    solution->print();
+    delete solution;
 
     return 0;
 }

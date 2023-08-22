@@ -52,16 +52,30 @@ int Population::getSize() {
     return individuals.size();
 }
 
-void Population::evaluation(Objective *fitnessFunc) {
+double Population::getAvegareFitness() {
+    double avg;
+
+    for (Individual *i : individuals) {
+        avg += i->getFitness();
+    }
+
+    return avg / getSize();
+}
+
+void Population::evaluate(Objective *fitnessFunc) {
     for (Individual *i : individuals) {
         i->setFitness(fitnessFunc->value(i->getX(), i->getY()));
     }
 }
 
 void Population::print() {
+    cout << "Population size: " << getSize() << endl;
+
     for (Individual *i : individuals) {
-        cout << "(" << i->getX() << ", " << i->getY() << ") fitness: " << i->getFitness() << endl;
+        i->print();
     }
+    
+    cout << "Average fitness: " << getAvegareFitness() << endl;
 }
 
 void Population::copy(Population *population) {

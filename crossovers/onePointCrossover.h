@@ -8,7 +8,7 @@
 
 class OnePointCrossover : public Crossover {
 public:
-    void cross(Population *parents, Population *children, RandomNumberGenerator *rand);
+    void cross(Individual **parents, vector<Individual*> *children, RandomNumberGenerator *rand);
 };
 
 #endif

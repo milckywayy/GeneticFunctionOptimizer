@@ -26,7 +26,8 @@ public:
     Individual *getBestIndividual();
     void removeIndividual(int index);
     int getSize();
-    void evaluation(Objective *fitnessFunc);
+    double getAvegareFitness();
+    void evaluate(Objective *fitnessFunc);
     void print();
     void copy(Population *population);
     void clear();

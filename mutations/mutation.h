@@ -14,7 +14,7 @@ public:
     Mutation (double mutationRate){
         this->mutationRate = mutationRate;
     }
-    virtual void mutate(Population *children, Constraints *constraints, RandomNumberGenerator *rand) = 0;
+    virtual void mutate(vector<Individual*> *children, Constraints *constraints, RandomNumberGenerator *rand) = 0;
 };
 
 #endif

@@ -13,9 +13,10 @@ private:
     mt19937 gen;
 public:
     RandomNumberGenerator(unsigned int seed);
-    double getRandomDouble(double min, double max);
     int getRandomInteger(int min, int max);
-    double getGaussDistributionNumber(double mean, double deviation);
+    double getRandomDouble(double min, double max);
+    double getGaussDistribution(double mean, double deviation);
+    double getRealDistribution(double leftBound, double rightBound);
 };
 
 #endif
