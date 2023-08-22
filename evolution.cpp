@@ -57,7 +57,7 @@ Individual *Evolution::run() {
 
     delete born_children;
     delete children;
-    delete parents;
+    delete[] parents;
     delete population;
 
     return solution;
