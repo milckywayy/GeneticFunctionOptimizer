@@ -4,17 +4,17 @@
 
 
 void OnePointCrossover::cross(Population *parents, Population *children, RandomNumberGenerator *rand) {
-    int mum;
-    int dad;
-    double weight;
+    int mum_index;
+    int dad_index;
 
     for (int i = 0 ; i < parents->getSize(); i++) {
-        mum = rand->getRandomInteger(0, parents->getSize() - 1);
-        dad = rand->getRandomInteger(0, parents->getSize() - 1);
+        do {
+            mum_index = rand->getRandomInteger(0, parents->getSize() - 1);
+            dad_index = rand->getRandomInteger(0, parents->getSize() - 1);
+        }
+        while (mum_index != dad_index);
 
-        weight = rand->getRandomDouble(0, 1);
-
-        children->addIndividual(new Individual(parents->getIndividual(mum)->getX() * weight, parents->getIndividual(dad)->getY() * (1 - weight)));
-        children->addIndividual(new Individual(parents->getIndividual(dad)->getX() * weight, parents->getIndividual(mum)->getY() * (1 - weight)));
+        children->addIndividual(new Individual(parents->getIndividual(mum_index)->getX(), parents->getIndividual(dad_index)->getY()));
+        children->addIndividual(new Individual(parents->getIndividual(dad_index)->getX(), parents->getIndividual(mum_index)->getY()));
     }
 }

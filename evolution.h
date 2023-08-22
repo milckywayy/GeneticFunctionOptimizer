@@ -11,6 +11,7 @@
 
 class Evolution {
 private:
+    int generations;
     Objective *fitnessFunc;
     Constraints *constraints;
     Selection *selection;
@@ -18,7 +19,7 @@ private:
     Crossover *crossover;
     Mutation *mutation;
 public:
-    Evolution(Population *population, Objective *fitnessFunc, Constraints *constraints, Selection *selection, Crossover *crossover, Mutation *mutation);
+    Evolution(int generations, Population *population, Objective *fitnessFunc, Constraints *constraints, Selection *selection, Crossover *crossover, Mutation *mutation);
     void run();
 };
 

@@ -6,7 +6,8 @@
 #include "utils/randomNumberGenerator.h"
 
 
-Evolution::Evolution(Population *population, Objective *fitnessFunc, Constraints *constraints, Selection *selection, Crossover *crossover, Mutation *mutation) {
+Evolution::Evolution(int generations, Population *population, Objective *fitnessFunc, Constraints *constraints, Selection *selection, Crossover *crossover, Mutation *mutation) {
+    this->generations = generations;
     this->fitnessFunc = fitnessFunc;
     this->constraints = constraints;
     this->selection = selection;
@@ -21,17 +22,17 @@ void Evolution::run() {
     Population *parents = new Population();
     Population *children = new Population();
     
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < generations; i++) {
         population->evaluation(fitnessFunc);
         selection->select(population, parents);
         crossover->cross(parents, children, &rand);
         mutation->mutate(children, constraints, &rand);
         
-	population->clear();
-	children->copy(population);
+        population->clear();
+        children->copy(population);
 
         children->clear();
-	parents->clear();
+	    parents->clear();
     }
 
     cout << round(population->getBestIndividual()->getX() * 100) / 100 << ", " << round(population->getBestIndividual()->getY() * 100) / 100 << endl;
