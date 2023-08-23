@@ -1,6 +1,7 @@
 #include <iostream>
 #include <time.h>
 #include <string>
+#include <cstring>
 #include <getopt.h>
 #include "population.h"
 #include "constraints/constraints.h"
@@ -8,6 +9,7 @@
 #include "objectives/quadratic.h"
 #include "objectives/rosenbrock.h"
 #include "objectives/cubic.h"
+#include "objectives/customFunction.h"
 #include "selections/tournamentSelection.h"
 #include "crossovers/onePointCrossover.h"
 #include "mutations/gaussMutation.h"
@@ -21,25 +23,31 @@ using namespace std;
 #define DEFAULT_GENERATIONS 500
 #define DEFAULT_POPULATION_SIZE 50
 #define DEFAULT_MUTATION_RATE 0.01
+#define DEFAULT_FUNCTION_REVERSE false
 
 
 int main(int argc, char **argv) {
     int generations = DEFAULT_GENERATIONS;
-    int population_size = DEFAULT_POPULATION_SIZE;
-    double mutation_rate = DEFAULT_MUTATION_RATE;
+    int populationSize = DEFAULT_POPULATION_SIZE;
+    double mutationRate = DEFAULT_MUTATION_RATE;
+
+    // false if we're looking for function maximum, true - minimum
+    bool functionReverse = DEFAULT_FUNCTION_REVERSE;
 
     Objective *fitnessFunc = NULL;
     Constraints *constraints = NULL;
-
-    TournamentSelection selection;    
-    OnePointCrossover crossover;
-    GaussMutation mutation(mutation_rate);
 
     int option;
     while ((option = getopt(argc, argv, "f:c:g:p:m:e:")) != -1) {
         switch (option) {
             case 'f':
-                cout << "Function: " << optarg << endl;
+                try {
+                    fitnessFunc = new CustomFunction(optarg);
+                }
+                catch (exception &e) {
+                    cerr << "Error: " << e.what() << endl;
+                    return 2;
+                }
                 break;
             case 'c':
                 try {
@@ -61,7 +69,7 @@ int main(int argc, char **argv) {
                 break;
             case 'p':
                 try {
-                    population_size = stoi(optarg);
+                    populationSize = stoi(optarg);
                 }
                 catch (exception &e) {
                     cerr << "Error: Population size must be an integer" << endl;
@@ -70,7 +78,7 @@ int main(int argc, char **argv) {
                 break;
             case 'm':
                 try {
-                    mutation_rate = stod(optarg);
+                    mutationRate = stod(optarg);
                 }
                 catch (exception &e) {
                     cerr << "Error: Mutation rate have be a float number" << endl;
@@ -78,9 +86,25 @@ int main(int argc, char **argv) {
                 }
                 break;
             case 'e':
+                try {
+                    if (strcmp(optarg, "min") == 0) {
+                        functionReverse = true;
+                    }
+                    else if (strcmp(optarg, "max") == 0) {
+                        functionReverse = false;
+                    }
+                    else {
+                        cerr << "Error: Argument " << optarg << " is not supported" << endl;
+                        return 2;
+                    }
+                }
+                catch (exception &e) {
+                    cerr << "Error: Mutation rate have be a float number" << endl;
+                    return 2;
+                }
                 break;
             case '?':
-                if (optopt == 'f' || optopt == 'c' || optopt == 'g' || optopt == 'p' || optopt == 'm') {
+                if (optopt == 'f' || optopt == 'c' || optopt == 'g' || optopt == 'p' || optopt == 'm' || optopt == 'e') {
                     cerr << "Error: No argument given for -" << (char)optopt << endl;
                 }
                 else {
@@ -90,14 +114,15 @@ int main(int argc, char **argv) {
         }
     }
 
-    if (constraints == NULL) {
-        // Use default constraints
-        constraints = new Constraints(2, 2.0);
-    }
-
     if (fitnessFunc == NULL) {
         // Use default function to be optimised
         fitnessFunc = new Rosenbrock;
+    }
+    fitnessFunc->setReverse(functionReverse);
+
+    if (constraints == NULL) {
+        // Use default constraints
+        constraints = new Constraints(fitnessFunc->getDimension(), 2.0);
     }
 
     if (constraints->getDimension() != fitnessFunc->getDimension()) {
@@ -108,7 +133,10 @@ int main(int argc, char **argv) {
     }
 
     RandomNumberGenerator rand((unsigned)time(NULL));
-    Evolution evolution(generations, population_size, fitnessFunc, constraints, &selection, &crossover, &mutation, &rand);
+    TournamentSelection selection;    
+    OnePointCrossover crossover;
+    GaussMutation mutation(mutationRate);
+    Evolution evolution(generations, populationSize, fitnessFunc, constraints, &selection, &crossover, &mutation, &rand);
     Individual *solution;
 
     try {

@@ -8,7 +8,7 @@
 class Rosenbrock : public Objective {
 public:
     Rosenbrock();
-    double value(vector<double> *position) override;
+    double getFunctionValue(vector<double> *position) override;
 };
 
 #endif

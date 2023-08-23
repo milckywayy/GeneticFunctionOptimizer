@@ -8,7 +8,7 @@
 class Cubic : public Objective {
 public:
     Cubic();
-    double value(vector<double> *position) override;
+    double getFunctionValue(vector<double> *position) override;
 };
 
 #endif

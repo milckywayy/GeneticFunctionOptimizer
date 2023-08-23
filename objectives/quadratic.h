@@ -8,7 +8,7 @@
 class Quadratic : public Objective {
 public:
     Quadratic();
-    double value(vector<double> *position) override;
+    double getFunctionValue(vector<double> *position) override;
 };
 
 #endif
