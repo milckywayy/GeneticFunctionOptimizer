@@ -4,6 +4,7 @@
 #include <getopt.h>
 #include "population.h"
 #include "constraints/constraints.h"
+#include "constraints/constraintsReader.h"
 #include "objectives/quadratic.h"
 #include "objectives/rosenbrock.h"
 #include "objectives/cubic.h"
@@ -26,7 +27,14 @@ int main(int argc, char **argv) {
     int generations = DEFAULT_GENERATIONS;
     int population_size = DEFAULT_POPULATION_SIZE;
     double mutation_rate = DEFAULT_MUTATION_RATE;
-    
+
+    Objective *fitnessFunc = NULL;
+    Constraints *constraints = NULL;
+
+    TournamentSelection selection;    
+    OnePointCrossover crossover;
+    GaussMutation mutation(mutation_rate);
+
     int option;
     while ((option = getopt(argc, argv, "f:c:g:p:m:e:")) != -1) {
         switch (option) {
@@ -34,60 +42,98 @@ int main(int argc, char **argv) {
                 cout << "Function: " << optarg << endl;
                 break;
             case 'c':
-                cout << "Constraints file: " << optarg << endl;
+                try {
+                    constraints = readConstraintsFromFile(optarg);
+                }
+                catch (exception &e) {
+                    cerr << "Error: " << e.what() << endl;
+                    return 2;
+                }
                 break;
             case 'g':
-                generations = stoi(optarg);
+                try {
+                    generations = stoi(optarg);
+                }
+                catch (exception &e) {
+                    cerr << "Error: Generations number must be an integer" << endl;
+                    return 2;
+                }
                 break;
             case 'p':
-                population_size = stoi(optarg);
+                try {
+                    population_size = stoi(optarg);
+                }
+                catch (exception &e) {
+                    cerr << "Error: Population size must be an integer" << endl;
+                    return 2;
+                }
                 break;
             case 'm':
-                mutation_rate = stod(optarg);
+                try {
+                    mutation_rate = stod(optarg);
+                }
+                catch (exception &e) {
+                    cerr << "Error: Mutation rate have be a float number" << endl;
+                    return 2;
+                }
                 break;
             case 'e':
                 break;
             case '?':
-                if (optopt == 'l') {
-                    cerr << "No argument given for -" << (char)optopt << endl;
+                if (optopt == 'f' || optopt == 'c' || optopt == 'g' || optopt == 'p' || optopt == 'm') {
+                    cerr << "Error: No argument given for -" << (char)optopt << endl;
                 }
                 else {
-                    cerr << "Unknown option: " << argv[optind - 1] << endl;
+                    cerr << "Error: Unknown option: " << argv[optind - 1] << endl;
                 }
                 return 1;
         }
     }
 
+    if (constraints == NULL) {
+        // Use default constraints
+        constraints = new Constraints(2, 2.0);
+    }
+
+    if (fitnessFunc == NULL) {
+        // Use default function to be optimised
+        fitnessFunc = new Rosenbrock;
+    }
+
+    if (constraints->getDimension() != fitnessFunc->getDimension()) {
+        delete fitnessFunc;
+        delete constraints;
+        cerr << "Error: Constraints don't match given function" << endl;
+        return 3;
+    }
+
     RandomNumberGenerator rand((unsigned)time(NULL));
-
-    // Function to be optimized
-    Rosenbrock fitnessFunc;
-
-    vector<double> constraintsMin;
-    vector<double> constraintsMax;
-    constraintsMin.push_back(-2);
-    constraintsMin.push_back(-2);
-    constraintsMin.push_back(-2);
-    constraintsMax.push_back(2);
-    constraintsMax.push_back(2);
-    constraintsMax.push_back(2);
-
-    Constraints constraints(fitnessFunc.getDimension(), &constraintsMin, &constraintsMax);
-    TournamentSelection selection;    
-    OnePointCrossover crossover;
-    GaussMutation mutation(mutation_rate);
-
-    Evolution evolution(generations, population_size, &fitnessFunc, &constraints, &selection, &crossover, &mutation, &rand);
-
+    Evolution evolution(generations, population_size, fitnessFunc, constraints, &selection, &crossover, &mutation, &rand);
     Individual *solution;
-    solution = evolution.run();
+
+    try {
+        solution = evolution.run();
+    }
+    catch (exception &e) {
+        delete fitnessFunc;
+        delete constraints;
+        delete solution;
+        cerr << "Error: " << e.what() << endl;
+        return 4;
+    }
     
+    // Print solution
     cout << "Solution: ( ";
     for (int axis = 0; axis < solution->getDimension(); axis++) {
         cout << round(solution->getPositionAtAxis(axis) * 1000) / 1000 << " ";
     }
-    cout << ")" << endl;
+    cout << ") in:" << endl;
+    for (int axis = 0; axis < solution->getDimension(); axis++) {
+        cout << "axis" << axis << " <" << constraints->getMin(axis) << ", " << constraints->getMax(axis) << ">" << endl;
+    }
 
+    delete fitnessFunc;
+    delete constraints;
     delete solution;
 
     return 0;

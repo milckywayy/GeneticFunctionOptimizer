@@ -1,10 +1,28 @@
 #include "constraints.h"
 
 
+Constraints::Constraints(int dimension, double value) {
+    this->dimension = dimension;
+
+    this->min = new vector<double>;
+    this->max = new vector<double>;
+
+    for (int i = 0; i < dimension; i++) {
+        this->min->push_back(-value);
+        this->max->push_back(value);
+    }
+}
+
 Constraints::Constraints(int dimension, vector<double> *min, vector<double> *max) {
     this->dimension = dimension;
-    this->min = min;
-    this->max = max;
+
+    this->min = new vector<double>;
+    this->max = new vector<double>;
+
+    for (int i = 0; i < dimension; i++) {
+        this->min->push_back(min->at(i));
+        this->max->push_back(max->at(i));
+    }
 }
 
 bool Constraints::isInside(vector<double> *point) {
@@ -35,4 +53,9 @@ double Constraints::getMin(int axis) {
 
 double Constraints::getMax(int axis) {
     return max->at(axis);
+}
+
+Constraints::~Constraints() {
+    delete min;
+    delete max;
 }

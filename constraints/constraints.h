@@ -14,12 +14,14 @@ private:
     vector<double> *min;
     vector<double> *max;
 public:
+    Constraints(int dimension, double value);
     Constraints(int dimension, vector<double> *min, vector<double> *max);
     bool isInside(vector<double> *point);
     bool isInsideOnAxis(double position, int axis);
     int getDimension();
     double getMin(int axis);
     double getMax(int axis);
+    ~Constraints();
 };
 
 #endif
