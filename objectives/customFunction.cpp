@@ -34,9 +34,16 @@ int CustomFunction::checkWhatDimension(string equation) {
 
 CustomFunction::CustomFunction(string equation) : Objective(checkWhatDimension(equation), equation) {
     this->equation = equation;
-    function.parseEquation(this->equation);
+
+    function = new ReversePolishNotation;
+    function->parseEquation(this->equation);
 }
 
 double CustomFunction::getFunctionValue(vector<double> *position) {
-    return function.evaluate(position);
+    return function->evaluate(position);
+}
+
+CustomFunction::~CustomFunction() {
+    cout << "test" << endl;
+    delete function;
 }

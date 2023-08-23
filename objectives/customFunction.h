@@ -10,11 +10,12 @@
 class CustomFunction : public Objective {
 private:
     string equation;
-    ReversePolishNotation function;
+    ReversePolishNotation *function;
     int checkWhatDimension(string equation);
 public:
     CustomFunction(string equation);
     double getFunctionValue(vector<double> *position);
+    ~CustomFunction();
 };
 
 #endif

@@ -45,6 +45,8 @@ public:
             return getFunctionValue(position);
         }
     }
+
+    virtual ~Objective() {};
 };
 
 #endif
