@@ -20,13 +20,30 @@
 using namespace std;
 
 
+#define SOLUTION_PRECISION 1000
+
 #define DEFAULT_GENERATIONS 500
 #define DEFAULT_POPULATION_SIZE 50
 #define DEFAULT_MUTATION_RATE 0.01
+#define DEFAULT_CONSTRAINTS_VALUE 2.0
 #define DEFAULT_FUNCTION_REVERSE false
 
 
+void help() {
+    cout << "Evolutionary algorithm for function optimization.\n\n"
+         << "Usage: ./program_name [OPTIONS]\n"
+         << "Options:\n"
+         << "\t-f <function>   Specify the custom function to be optimized. Default: Rosenbrock.\n"
+         << "\t-c <constraints_file>  Read constraints from the specified file.\n"
+         << "\t-g <generations>  Specify the number of generations. Default: 500.\n"
+         << "\t-p <population>   Specify the population size. Default: 50.\n"
+         << "\t-m <mutation-rate>   Specify the mutation rate. Default: 0.01.\n"
+         << "\t-e <min/max>   Specify whether to find the function minimum or maximum. Default: maximum.\n"
+         << "\t-h   Display this help message.\n";
+}
+
 int main(int argc, char **argv) {
+    // Basic algorithm parameters
     int generations = DEFAULT_GENERATIONS;
     int populationSize = DEFAULT_POPULATION_SIZE;
     double mutationRate = DEFAULT_MUTATION_RATE;
@@ -38,8 +55,12 @@ int main(int argc, char **argv) {
     Constraints *constraints = NULL;
 
     int option;
-    while ((option = getopt(argc, argv, "f:c:g:p:m:e:")) != -1) {
+    while ((option = getopt(argc, argv, "hf:c:g:p:m:e:")) != -1) {
         switch (option) {
+            case 'h':
+                help();
+                return 0;
+                break;
             case 'f':
                 try {
                     fitnessFunc = new CustomFunction(optarg);
@@ -110,6 +131,8 @@ int main(int argc, char **argv) {
                 else {
                     cerr << "Error: Unknown option: " << argv[optind - 1] << endl;
                 }
+                cout << endl;
+                help();
                 return 1;
         }
     }
@@ -122,9 +145,10 @@ int main(int argc, char **argv) {
 
     if (constraints == NULL) {
         // Use default constraints
-        constraints = new Constraints(fitnessFunc->getDimension(), 2.0);
+        constraints = new Constraints(fitnessFunc->getDimension(), DEFAULT_CONSTRAINTS_VALUE);
     }
 
+    // Check if function and constraints are matched
     if (constraints->getDimension() != fitnessFunc->getDimension()) {
         delete fitnessFunc;
         delete constraints;
@@ -140,6 +164,7 @@ int main(int argc, char **argv) {
     Individual *solution;
 
     try {
+        // Starting main algorithm
         solution = evolution.run();
     }
     catch (exception &e) {
@@ -151,9 +176,9 @@ int main(int argc, char **argv) {
     }
     
     // Print solution
-    cout << "Solution:\nvalue = " << solution->getFitness() << " at ( ";
+    cout << "Solution:\nvalue = " << round(solution->getFitness() * SOLUTION_PRECISION) / SOLUTION_PRECISION << " at ( ";
     for (int axis = 0; axis < solution->getDimension(); axis++) {
-        cout << round(solution->getPositionAtAxis(axis) * 1000) / 1000 << " ";
+        cout << round(solution->getPositionAtAxis(axis) * SOLUTION_PRECISION) / SOLUTION_PRECISION << " ";
     }
     cout << ") in:" << endl;
     for (int axis = 0; axis < solution->getDimension(); axis++) {
