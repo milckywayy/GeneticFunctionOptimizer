@@ -1,5 +1,7 @@
 #include <iostream>
 #include <time.h>
+#include <string>
+#include <getopt.h>
 #include "population.h"
 #include "constraints/constraints.h"
 #include "objectives/quadratic.h"
@@ -15,12 +17,47 @@
 using namespace std;
 
 
-#define GENERATIONS 500
-#define POPULATION_SIZE 50
-#define MUTATION_RATE 0.01
+#define DEFAULT_GENERATIONS 500
+#define DEFAULT_POPULATION_SIZE 50
+#define DEFAULT_MUTATION_RATE 0.01
 
 
 int main(int argc, char **argv) {
+    int generations = DEFAULT_GENERATIONS;
+    int population_size = DEFAULT_POPULATION_SIZE;
+    double mutation_rate = DEFAULT_MUTATION_RATE;
+    
+    int option;
+    while ((option = getopt(argc, argv, "f:c:g:p:m:e:")) != -1) {
+        switch (option) {
+            case 'f':
+                cout << "Function: " << optarg << endl;
+                break;
+            case 'c':
+                cout << "Constraints file: " << optarg << endl;
+                break;
+            case 'g':
+                generations = stoi(optarg);
+                break;
+            case 'p':
+                population_size = stoi(optarg);
+                break;
+            case 'm':
+                mutation_rate = stod(optarg);
+                break;
+            case 'e':
+                break;
+            case '?':
+                if (optopt == 'l') {
+                    cerr << "No argument given for -" << (char)optopt << endl;
+                }
+                else {
+                    cerr << "Unknown option: " << argv[optind - 1] << endl;
+                }
+                return 1;
+        }
+    }
+
     RandomNumberGenerator rand((unsigned)time(NULL));
 
     // Function to be optimized
@@ -38,9 +75,9 @@ int main(int argc, char **argv) {
     Constraints constraints(fitnessFunc.getDimension(), &constraintsMin, &constraintsMax);
     TournamentSelection selection;    
     OnePointCrossover crossover;
-    GaussMutation mutation(MUTATION_RATE);
+    GaussMutation mutation(mutation_rate);
 
-    Evolution evolution(GENERATIONS, POPULATION_SIZE, &fitnessFunc, &constraints, &selection, &crossover, &mutation, &rand);
+    Evolution evolution(generations, population_size, &fitnessFunc, &constraints, &selection, &crossover, &mutation, &rand);
 
     Individual *solution;
     solution = evolution.run();
