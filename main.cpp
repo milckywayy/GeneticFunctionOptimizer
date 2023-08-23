@@ -151,7 +151,7 @@ int main(int argc, char **argv) {
     }
     
     // Print solution
-    cout << "Solution: ( ";
+    cout << "Solution:\nvalue = " << solution->getFitness() << " at ( ";
     for (int axis = 0; axis < solution->getDimension(); axis++) {
         cout << round(solution->getPositionAtAxis(axis) * 1000) / 1000 << " ";
     }
