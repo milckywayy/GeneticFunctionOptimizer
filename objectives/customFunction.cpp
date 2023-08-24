@@ -36,7 +36,7 @@ CustomFunction::CustomFunction(string equation) : Objective(checkWhatDimension(e
     this->equation = equation;
 
     function = new ReversePolishNotation;
-    function->parseEquation(this->equation);
+    function->parseInfix(this->equation);
 }
 
 double CustomFunction::getFunctionValue(vector<double> *position) {
