@@ -19,6 +19,7 @@ public:
     Objective (int dimension, string equationString) {
         this->dimension = dimension;
         this->reverse = false;
+        this->equationString = equationString;
     }
 
     int getDimension(){

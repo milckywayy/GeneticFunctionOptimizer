@@ -26,7 +26,6 @@ using namespace std;
 #define DEFAULT_POPULATION_SIZE 50
 #define DEFAULT_MUTATION_RATE 0.01
 #define DEFAULT_CONSTRAINTS_VALUE 2.0
-#define DEFAULT_FUNCTION_REVERSE false
 
 
 void help() {
@@ -42,14 +41,19 @@ void help() {
          << "\t-h   Display this help message.\n";
 }
 
+enum Extrema {
+    Minimum,
+    Maximum
+};
+
 int main(int argc, char **argv) {
     // Basic algorithm parameters
     int generations = DEFAULT_GENERATIONS;
     int populationSize = DEFAULT_POPULATION_SIZE;
     double mutationRate = DEFAULT_MUTATION_RATE;
 
-    // false if we're looking for function maximum, true - minimum
-    bool functionReverse = DEFAULT_FUNCTION_REVERSE;
+    // Default extrema we're looking for
+    Extrema extrema = Minimum;
 
     Objective *fitnessFunc = NULL;
     Constraints *constraints = NULL;
@@ -109,10 +113,10 @@ int main(int argc, char **argv) {
             case 'e':
                 try {
                     if (strcmp(optarg, "min") == 0) {
-                        functionReverse = true;
+                        extrema = Minimum;
                     }
                     else if (strcmp(optarg, "max") == 0) {
-                        functionReverse = false;
+                        extrema = Maximum;
                     }
                     else {
                         cerr << "Error: Argument " << optarg << " is not supported" << endl;
@@ -141,7 +145,13 @@ int main(int argc, char **argv) {
         // Use default function to be optimised
         fitnessFunc = new Rosenbrock;
     }
-    fitnessFunc->setReverse(functionReverse);
+
+    if (extrema == Maximum) {
+        fitnessFunc->setReverse(false);
+    }
+    else if (extrema == Minimum) {
+        fitnessFunc->setReverse(true);
+    }
 
     if (constraints == NULL) {
         // Use default constraints
@@ -174,18 +184,24 @@ int main(int argc, char **argv) {
         cerr << "Error: " << e.what() << endl;
         return 4;
     }
-    
+
     // Print solution
-    cout << "Solution:\nvalue = " << round(solution->getFitness() * SOLUTION_PRECISION) / SOLUTION_PRECISION << " at ( ";
+    cout << "Found ";
+    if (extrema == Minimum) {
+        cout << "minimum = " << -round(solution->getFitness() * SOLUTION_PRECISION) / SOLUTION_PRECISION;
+    }
+    else {
+        cout << "maximum = " << round(solution->getFitness() * SOLUTION_PRECISION) / SOLUTION_PRECISION;
+    }
+    cout << " at point ( ";
     for (int axis = 0; axis < solution->getDimension(); axis++) {
         cout << round(solution->getPositionAtAxis(axis) * SOLUTION_PRECISION) / SOLUTION_PRECISION << " ";
     }
     cout << ") in:" << endl;
     for (int axis = 0; axis < solution->getDimension(); axis++) {
-        cout << "axis" << axis << " <" << constraints->getMin(axis) << ", " << constraints->getMax(axis) << ">" << endl;
+        cout << "axis" << axis << ": <" << constraints->getMin(axis) << ", " << constraints->getMax(axis) << ">" << endl;
     }
 
-    delete fitnessFunc;
     delete constraints;
     delete solution;
 
