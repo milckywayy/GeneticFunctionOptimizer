@@ -37,7 +37,7 @@ void help() {
          << "\t-g <generations>  Specify the number of generations. Default: 500.\n"
          << "\t-p <population>   Specify the population size. Default: 50.\n"
          << "\t-m <mutation-rate>   Specify the mutation rate. Default: 0.01.\n"
-         << "\t-e <min/max>   Specify whether to find the function minimum or maximum. Default: maximum.\n"
+         << "\t-e <min/max>   Specify whether to find the function minimum or maximum. Default: minimum.\n"
          << "\t-h   Display this help message.\n";
 }
 
