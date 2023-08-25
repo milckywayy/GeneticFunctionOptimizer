@@ -202,6 +202,7 @@ int main(int argc, char **argv) {
         cout << "axis" << axis << ": <" << constraints->getMin(axis) << ", " << constraints->getMax(axis) << ">" << endl;
     }
 
+    delete fitnessFunc;
     delete constraints;
     delete solution;
 
